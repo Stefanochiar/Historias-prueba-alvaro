@@ -1,0 +1,542 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creador OS™ · Historia</title>
+    <!-- Fallback Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Neue Montreal';
+            src: url('mp4ymmfi-NeueMontreal-Bold.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        :root {
+            --orange: #FF6A00;
+            --card-bg: #0D0D1A;
+            --app-bg: #060607;
+            --text: #FFFFFF;
+            --meta-grey: #8a8a92;
+            --border-dark: #18181c;
+            --border-light: #1a1a20;
+            --font-main: 'Neue Montreal', 'Inter', system-ui, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background: var(--app-bg);
+            color: var(--text);
+            font-family: var(--font-main);
+            overflow-x: hidden;
+        }
+
+        /* Toolbar */
+        .toolbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            height: 64px;
+            background: rgba(6, 6, 7, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-dark);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+        }
+
+        .toolbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 900;
+            font-size: 18px;
+            letter-spacing: 0.05em;
+        }
+
+        .brand-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--orange);
+            border-radius: 50%;
+            box-shadow: 0 0 14px var(--orange);
+        }
+
+        .toolbar-meta {
+            color: var(--meta-grey);
+            font-size: 14px;
+            font-weight: 700;
+            margin-left: 12px;
+            padding-left: 12px;
+            border-left: 1px solid var(--border-dark);
+        }
+
+        .toolbar-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            height: 38px;
+            padding: 0 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 900;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s ease;
+            border: none;
+            text-decoration: none;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border-light);
+        }
+
+        .btn-solid {
+            background: var(--orange);
+            color: #fff;
+        }
+
+        .btn-solid:hover {
+            box-shadow: 0 0 20px rgba(255, 106, 0, 0.4);
+        }
+
+        /* Stage */
+        .stage {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 28px;
+            padding: 40px 24px 80px;
+            justify-content: flex-start;
+        }
+
+        .story-shell {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .story-label {
+            font-size: 13px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--meta-grey);
+        }
+
+        .story-label span {
+            color: var(--orange);
+        }
+
+        .story-scale {
+            width: 324px;
+            height: 576px;
+            background: #000;
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        /* Inner Story (1080x1920) */
+        .story {
+            width: 1080px;
+            height: 1920px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: scale(0.3);
+            transform-origin: top left;
+            overflow: hidden;
+            background: #060607;
+            padding: 80px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* BG Layers */
+        .bg-photo {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            filter: contrast(1.1) brightness(0.75);
+            z-index: 1;
+        }
+
+        .vignette {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.8) 70%, rgba(0,0,0,0.95) 100%);
+            z-index: 2;
+        }
+
+        .glow {
+            position: absolute;
+            width: 1100px;
+            height: 1100px;
+            background: radial-gradient(circle, rgba(255,106,0,0.4) 0%, rgba(255,106,0,0) 65%);
+            filter: blur(80px);
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .noise {
+            position: absolute;
+            inset: 0;
+            z-index: 4;
+            opacity: 0.06;
+            mix-blend-mode: overlay;
+            pointer-events: none;
+        }
+
+        /* Chrome */
+        .chrome {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            min-height: 22px;
+        }
+
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 11;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+            padding-bottom: 20px;
+            min-height: 40px;
+        }
+
+        /* Typography & Layouts */
+        .hook-giant {
+            font-size: 260px;
+            font-weight: 900;
+            line-height: 0.8;
+            letter-spacing: -0.04em;
+            color: var(--orange);
+            text-shadow: 0 0 80px rgba(255, 106, 0, 0.3);
+            text-align: center;
+            margin: 0;
+        }
+
+        .text-top {
+            font-size: 56px;
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: -0.01em;
+            margin-bottom: 0;
+        }
+
+        .text-medium {
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.01em;
+        }
+
+        .text-bottom {
+            font-size: 40px;
+            font-weight: 700;
+            line-height: 1.25;
+        }
+
+        .punchline {
+            font-size: 68px;
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -0.012em;
+        }
+
+        .punchline b {
+            font-weight: 900;
+        }
+
+        /* Highlights */
+        .hl-solid {
+            background: var(--orange);
+            color: #fff;
+            font-weight: 900;
+            padding: 4px 10px;
+            border-radius: 6px;
+            white-space: nowrap;
+        }
+
+        .hl-dashed {
+            border: 3px dashed var(--orange);
+            padding: 6px 14px;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: 900;
+        }
+
+        .hl-underline {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hl-underline::after {
+            content: '';
+            position: absolute;
+            left: -2px;
+            right: -2px;
+            bottom: -4px;
+            height: 8px;
+            background: var(--orange);
+            z-index: -1;
+            border-radius: 2px;
+        }
+
+        /* CTA */
+        .cta-btn {
+            background: var(--orange);
+            color: #000;
+            padding: 22px 44px;
+            border-radius: 999px;
+            font-size: 30px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            display: inline-flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 14px 50px rgba(255, 106, 0, 0.5);
+            margin-top: 24px;
+            border: none;
+        }
+
+        .cta-btn::after {
+            content: '';
+            width: 14px;
+            height: 14px;
+            border-top: 4px solid #000;
+            border-right: 4px solid #000;
+            transform: rotate(45deg);
+        }
+
+        /* Layout Helpers */
+        .layout-hook {
+            justify-content: flex-start;
+            padding-top: 100px;
+            text-align: center;
+        }
+
+        .layout-text {
+            justify-content: center;
+            gap: 40px;
+            padding-top: 100px;
+        }
+
+        .layout-cierre {
+            justify-content: space-between;
+            padding-top: 100px;
+        }
+
+        [data-glow-pos="center"] .glow { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        [data-glow-pos="top"] .glow { top: 20%; left: 50%; transform: translate(-50%, -50%); }
+        [data-glow-pos="bottom"] .glow { bottom: 0; left: 50%; transform: translate(-50%, -50%); }
+
+    </style>
+</head>
+<body>
+
+    <div class="toolbar">
+        <div class="toolbar-brand">
+            <div class="brand-dot"></div>
+            Creador OS™
+            <span class="toolbar-meta">Historia · Libertad de Negocio · 4 slides · 1080×1920</span>
+        </div>
+        <div class="toolbar-actions">
+            <button class="btn btn-ghost" onclick="downloadAll()">Descargar todas (PNG)</button>
+            <button class="btn btn-solid" onclick="downloadCurrent()">Descargar actual</button>
+        </div>
+    </div>
+
+    <div class="stage" id="stage">
+        <!-- Story 1: HOOK -->
+        <div class="story-shell">
+            <div class="story-label">Historia <span>01</span> · HOOK</div>
+            <div class="story-scale">
+                <div class="story" id="story-1" data-glow-pos="center">
+                    <div class="bg-photo" style="background-image: url('mp515vod-IMG_2430.jpg');"></div>
+                    <div class="vignette" style="background: radial-gradient(ellipse at center, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0.6) 100%);"></div>
+                    <div class="glow"></div>
+                    <div class="noise"></div>
+                    <div class="chrome">
+                        <div class="header"></div>
+                        <div class="content layout-hook">
+                            <div class="text-top">Un mes facturas</div>
+                            <div class="hook-giant">20k</div>
+                            <div class="text-medium">Al siguiente, 8k.<br>Y al otro… ni idea.</div>
+                        </div>
+                        <div class="footer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Story 2: BUILD-UP -->
+        <div class="story-shell">
+            <div class="story-label">Historia <span>02</span> · CUERPO</div>
+            <div class="story-scale">
+                <div class="story" id="story-2" data-glow-pos="top">
+                    <div class="bg-photo" style="background-image: url('mp4ylokp-2F48C84D-E8FB-4446-A7CE-6289DA35F22B.jpg');"></div>
+                    <div class="vignette"></div>
+                    <div class="glow"></div>
+                    <div class="noise"></div>
+                    <div class="chrome">
+                        <div class="header"></div>
+                        <div class="content layout-text" style="justify-content: flex-start; padding-top: 140px;">
+                            <div class="text-top">Los lanzamientos funcionan.<br><span class="hl-underline">Pero no sostienen un negocio.</span></div>
+                            <div class="text-medium">
+                                <div style="margin-bottom: 24px;">Cada vez que vendes,</div>
+                                <span class="hl-dashed">EMPIEZAS DE CERO.</span><br><br>
+                                Vuelves a generar ruido.<br>
+                                Vuelves a empujar.<br>
+                                Vuelves a agotarte.
+                            </div>
+                            <div class="text-bottom">Y cuando termina…<br>silencio otra vez.</div>
+                        </div>
+                        <div class="footer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Story 3: TRANSITION -->
+        <div class="story-shell">
+            <div class="story-label">Historia <span>03</span> · VALOR</div>
+            <div class="story-scale">
+                <div class="story" id="story-3" data-glow-pos="bottom">
+                    <div class="bg-photo" style="background-image: url('mp50t3mf-IMG_1569.jpg');"></div>
+                    <div class="vignette" style="background: radial-gradient(ellipse at center, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0.6) 100%);"></div>
+                    <div class="glow"></div>
+                    <div class="noise"></div>
+                    <div class="chrome">
+                        <div class="header"></div>
+                        <div class="content layout-text" style="justify-content: flex-start; padding-top: 140px;">
+                            <div class="punchline">La tranquilidad no llega cuando lanzas mejor.</div>
+                            <div class="text-medium">
+                                <div style="margin-bottom: 24px;">Llega cuando tienes algo que</div>
+                                <div style="margin-bottom: 24px;"><span class="hl-solid">GENERA DEMANDA</span></div>
+                                <div>todos los meses.</div>
+                            </div>
+                            <div class="text-bottom">
+                                Sin depender de una fecha.<br>
+                                Sin empujar todo el tiempo.<br><br>
+                                <span class="hl-underline">Esa es la diferencia entre vender… y escalar.</span>
+                            </div>
+                        </div>
+                        <div class="footer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Story 4: CIERRE -->
+        <div class="story-shell">
+            <div class="story-label">Historia <span>04</span> · CIERRE</div>
+            <div class="story-scale">
+                <div class="story" id="story-4" data-glow-pos="center">
+                    <div class="bg-photo" style="background-image: url('mp4yloni-E92DD397-34FC-4B7E-919C-89E2DB561F26.jpg');"></div>
+                    <div class="vignette"></div>
+                    <div class="glow"></div>
+                    <div class="noise"></div>
+                    <div class="chrome">
+                        <div class="header"></div>
+                        <div class="content layout-cierre" style="justify-content: flex-start; gap: 40px; padding-top: 60px;">
+                            <div class="punchline">
+                                Si cada mes depende de cuánto empujas,<br><b>NO TIENES UN NEGOCIO.</b>
+                            </div>
+                            <div class="bottom-block">
+                                <div class="text-medium">Tienes un trabajo muy caro.</div>
+                                <div class="text-medium" style="margin-top: 32px;">Escríbeme:</div>
+                                <div class="cta-btn">SISTEMA</div>
+                                <div class="text-bottom" style="margin-top: 32px;">y te explico cómo salir de esa rueda.</div>
+                            </div>
+                        </div>
+                        <div class="footer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.min.js"></script>
+    <script>
+        async function downloadCurrent() {
+            const node = document.getElementById('story-1');
+            await exportNode(node, 'CreadorOS-Story-01.png');
+        }
+
+        async function downloadAll() {
+            const stories = document.querySelectorAll('.story');
+            for (let i = 0; i < stories.length; i++) {
+                const node = stories[i];
+                const fileName = `CreadorOS-Story-0${i+1}.png`;
+                await exportNode(node, fileName);
+            }
+        }
+
+        async function exportNode(node, fileName) {
+            try {
+                await document.fonts.ready;
+                const originalTransform = node.style.transform;
+                node.style.transform = 'none';
+                const dataUrl = await htmlToImage.toPng(node, {
+                    pixelRatio: 2,
+                    backgroundColor: '#000',
+                    width: 1080,
+                    height: 1920
+                });
+                node.style.transform = originalTransform;
+                const link = document.createElement('a');
+                link.download = fileName;
+                link.href = dataUrl;
+                link.click();
+            } catch (error) {
+                console.error('Error exporting image:', error);
+            }
+        }
+
+        const noiseSvg = `
+            <svg viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
+                <filter id="noiseFilter">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/>
+                </filter>
+                <rect width="100%" height="100%" filter="url(#noiseFilter)"/>
+            </svg>
+        `;
+        document.querySelectorAll('.noise').forEach(el => { el.innerHTML = noiseSvg; });
+    </script>
+</body>
+</html>
